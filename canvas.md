@@ -88,7 +88,7 @@
 | copy               | 显示源图像。忽略目标图像。                          |
 | xor                | 使用异或操作对源图像与目标图像进行组合。                   |
 
-![5D7CD8E3-7E5B-476A-8B23-C1D3CF46F7D5](/Users/wangjing/Library/Containers/com.tencent.qq/Data/Library/Application Support/QQ/Users/897527394/QQ/Temp.db/5D7CD8E3-7E5B-476A-8B23-C1D3CF46F7D5.png)
+![示例](https://udisk-qn.jituancaiyun.com/1502437323758-2-32745-2180?e=1502440937&token=nbzSdCoNGpHkOVbRoK0l-T-WPf694230OJxRz_AT:VyJzOzy3kEZg_E8n5SW10iuvzN8=)
 
 #### 运用
 
