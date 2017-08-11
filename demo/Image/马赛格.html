@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>马赛格</title>
+    <style>
+        #canvas {
+            border: 1px solid red;
+        }
+
+    </style>
+</head>
+
+<body>
+<canvas id="canvas" width="500" height="500"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext("2d");
+    var image = new Image();
+    var step = 25,
+        lineCor = 250;
+    var sx = 150,
+        sy =150 ;
+    image.onload = function () {
+        context.drawImage(image, 0, 0);
+        var imageData = context.getImageData(0, 0, 300, 300);
+        var data = imageData.data;
+        console.log(imageData)
+        var w = imageData.width;
+        console.log(w)
+        for (var j = 0; j < step; j ++) {
+            for (var i = 0; i < step; i++) {
+//                var n = 4 * (j+((sy-1+i)*canvas.width+sx));
+//                var k = 4 * (i + j * sy*sx);
+                var n = 4*((sy-1+j)*w +sx+i)
+                data[n] = lineCor-i;
+                data[n + 1] = lineCor-j;
+                data[n + 2] = lineCor-i*j;
+//                data[k] = lineCor;
+//                data[k + 1] = lineCor;
+//                data[k + 2] = lineCor;
+            }
+        }
+
+        context.putImageData(imageData, 150, 150)
+    }
+    image.src = "img/2.jpg"
+
+</script>
+</html>

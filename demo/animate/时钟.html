@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>clock</title>
+</head>
+<style>
+	#canvas{
+		border: 2px solid skyblue;
+	}
+</style>
+<body>
+	<canvas id="canvas" width="400" height="400"></canvas>
+</body>
+<script>
+	var canvas=document.getElementById("canvas");
+	var context=canvas.getContext('2d');
+	context.translate(200,200);
+	context.rotate(-Math.PI/2);
+	context.strokeStyle="skyblue";
+	context.lineCap="round";
+	
+	function clock(){
+		context.clearRect(-200,-200,400,400)
+		context.beginPath();
+		context.lineWidth=5;
+		context.arc(0,0,200,0,Math.PI*2);
+		context.stroke();
+		for(var i=0;i<12;i++){
+			context.save()
+			context.rotate(Math.PI/6*i)
+			context.beginPath();
+			context.lineWidth=10;
+			context.strokeStyle="red";
+			context.moveTo(160,0);
+			context.lineTo(190,0);
+			context.stroke();
+			context.restore();
+		}
+		for(var i=0;i<60;i++){
+			if(i%5!==0){
+				context.save()
+				context.rotate(Math.PI/30*i)
+				context.beginPath();
+				context.lineWidth=5;
+				context.strokeStyle="pink";
+				context.moveTo(170,0);
+				context.lineTo(190,0);
+				context.stroke();
+				context.restore();
+			}
+		}
+		var nowDate=new Date;
+		var hour=nowDate.getHours();
+		var min=nowDate.getMinutes();
+		var sec=nowDate.getSeconds();
+		var anglePreSecond=Math.PI*2/60;
+		var anglePreMintues=Math.PI*2/60+anglePreSecond/60;
+		var anglePreHours=Math.PI*2/12+anglePreMintues/12;
+	
+		//时针
+		context.save()
+		context.beginPath();
+		context.lineWidth=12;
+		context.strokeStyle="blue";
+		context.rotate(hour*anglePreHours)
+		context.moveTo(0,0);
+		context.lineTo(110,0);
+		context.stroke();
+		context.restore();
+		//分针
+		context.save()
+		context.beginPath();
+		context.lineWidth=8;
+		context.strokeStyle="green";
+		context.moveTo(0,0);
+		context.rotate(min*anglePreMintues)
+		context.lineTo(140,0);
+		context.stroke();
+		context.restore();
+		//秒针
+		context.save()
+		context.beginPath();
+		context.lineWidth=4;
+		context.strokeStyle="yellow";
+		context.moveTo(0,0);
+		context.rotate(sec*anglePreSecond)
+		context.lineTo(170,0);
+		context.stroke();
+		context.restore();
+	}
+
+	clock();
+	setInterval(clock, 1000)
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>

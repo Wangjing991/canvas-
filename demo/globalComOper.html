@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas-source</title>
+</head>
+<style>
+	canvas{
+		box-shadow: 0 4px 30px red;
+	}
+</style>
+<body>
+	<canvas id="canvas1" width="400" height="400"></canvas>
+	<canvas id="canvas2" width="400" height="400"></canvas>
+	<canvas id="canvas3" width="400" height="400"></canvas>
+	<canvas id="canvas4" width="400" height="400"></canvas>
+	<canvas id="canvas5" width="400" height="400"></canvas>
+	<canvas id="canvas6" width="400" height="400"></canvas>
+	<canvas id="canvas7" width="400" height="400"></canvas>
+	<canvas id="canvas8" width="400" height="400"></canvas>
+	<canvas id="canvas9" width="400" height="400"></canvas>
+	<canvas id="canvas10" width="400" height="400"></canvas>
+	<canvas id="canvas11" width="400" height="400"></canvas>
+	<!--<canvas id="canvas12" width="400" height="400"></canvas>-->
+</body>
+<script>
+
+
+	function canvas(i,val) {
+        var canvas1=document.getElementById("canvas"+i);
+        var ctx1=canvas1.getContext("2d");
+        ctx1.fillStyle="black";
+
+        ctx1.beginPath();
+        ctx1.font="20px Arial";
+        ctx1.fillStyle="skyblue"
+        ctx1.fillText(val,200,350);
+        ctx1.closePath();
+        ctx1.save();
+        ctx1.beginPath();
+        ctx1.fillRect(20,20,200,200);
+        ctx1.globalCompositeOperation= val //设置之前的为目标图像，下面新建的为源图像
+        ctx1.fillStyle="green";
+        ctx1.arc(200,200,100,0,Math.PI*2)
+        ctx1.fill()
+		ctx1.restore();
+
+        ctx1.closePath();
+    }
+    var arr = ['source-over', 'source-atop','source-in','source-out','destination-over','destination-atop','destination-in','destination-out','lighter','copy','xor']
+    for(var i=1;i<12;i++){
+	    canvas(i,arr[i-1])
+	}
+</script>
+</html>

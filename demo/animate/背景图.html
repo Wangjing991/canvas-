@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>背景图</title>
+</head>
+<style>
+    #canvas {
+        box-shadow: 0 5px 50px red;
+    }
+</style>
+<body>
+<canvas id="canvas" width="320" height="568"></canvas>
+</body>
+<script>
+    /*
+    * Canvas 中引入了状态的保持机制.
+    * 使用 CanvasRenderingContext2D.save() 方法可以保存当前状态.
+    * 如果需要恢复到已经保存的状态, 只需要调用 CanvasRenderingContext2D.restore() 方法即可.
+    * */
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext("2d");
+
+    var image = new Image();
+    var i = 0;
+    image.onload = function () {
+        window.requestAnimationFrame(animate);
+    }
+
+    function animate() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.save();
+        context.translate(0, i);   // 该方法将坐标进行平移.
+        context.drawImage(image, 0, 0);
+        context.drawImage(image, 0, canvas.height);
+        i--;
+        if (i < -canvas.height) {
+            i = 0
+        }
+        context.restore()
+        window.requestAnimationFrame(animate);
+    }
+
+    image.src = './img/airport.jpg'
+</script>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自由落体</title>
+</head>
+<style>
+	#canvas{
+		box-shadow: 0 5px 50px red;
+	}
+</style>
+<body>
+	<canvas id="canvas"  width="800" height="600"></canvas>
+</body>
+<script>
+	var canvas=document.getElementById('canvas');
+	var context=canvas.getContext("2d");
+	function Rect(x,y,width,height,color,v){
+		this.x=x;
+		this.y=y;
+		this.width=width;
+		this.height=height;
+		this.color=color;
+		this.v=v;
+		this.draw=function(){
+			context.beginPath();
+			context.fillStyle=this.color;
+			context.fillRect(this.x,this.y,this.width,this.height)
+		}
+		this.move=function(){
+			this.x+=this.v;
+			if (this.x+this.width>canvas.width) {
+				this.v*=-1;
+			}else if (this.x<0) {
+				this.v*=-1;
+			}
+		}
+	}
+	var rect1=new Rect(0,0,100,100,'red',3)
+	var rect2=new Rect(canvas.width-100,0,100,100,'skyblue',-3)
+	rect1.draw();
+	rect2.draw();
+	function isRectInsect(rect1,rect2){
+		var minX1=rect1.x;
+		var maxX1=rect1.x+rect1.width;
+		var minY1=rect1.y;
+		var maxY1=rect1.y+rect1.height;
+		var minX2=rect2.x;
+		var maxX2=rect2.x+rect2.width;
+		var minY2=rect2.y;
+		var maxY2=rect2.y+rect2.height;
+		var minX=Math.max(minX1,minX2);
+		var maxX=Math.min(maxX1,maxX2);
+		var minY=Math.max(minY1,minY2);
+		var maxY=Math.min(maxY1,maxY2);
+		if (minX<maxX&&minY<maxY){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	function animate(){
+		context.clearRect(0,0,canvas.width,canvas.height)
+		rect1.move()
+		rect2.move()
+		rect1.draw()
+		rect2.draw()
+		if(isRectInsect(rect1,rect2)){
+					rect1.v*=-1;
+					rect2.v*=-1;
+		}
+		window.requestAnimationFrame(animate)
+	}
+	window.requestAnimationFrame(animate)
+		
+</script>
+</html>

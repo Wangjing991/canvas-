@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>水印图片</title>
+</head>
+<style>
+    #canvas {
+        border: 1px solid black;
+    }
+</style>
+<body>
+<canvas id="canvas" width="500" height="400"></canvas>
+<a href="" id="a">生成图片</a>
+</body>
+<script type="text/javascript">
+    var url;
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext('2d');
+    var image = new Image();
+    image.src = "img/1.jpg";
+
+    image.onload = function () {
+        context.drawImage(image, 10, 10, 500, 400);
+        context.fillStyle = "rgba(122,122,122,0.5)";
+        context.font = "30px Airl";
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 12; j++) {
+                context.save();
+                context.rotate(a2r(-20))
+                context.fillText("ShineMo", -60 + i * 175, 30 + j * 55);
+                context.restore();
+            }
+
+        }
+        url = canvas.toDataURL();
+        document.getElementById("a").href = url;
+    }
+
+    function a2r ( angle ) {
+        return angle * Math.PI / 180;
+    }
+
+</script>
+</html>

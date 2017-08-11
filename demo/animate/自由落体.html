@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自由落体</title>
+</head>
+<style>
+	#canvas{
+		box-shadow: 0 5px 50px red;
+	}
+</style>
+<body>
+	<canvas id="canvas"  width="1500" height="800"></canvas>
+</body>
+<script>
+	var canvas=document.getElementById('canvas');
+	var context=canvas.getContext("2d");
+	var lastDate,y
+	context.fillStyle='red';
+	canvas.onclick=function(){
+		 lastDate=new Date();
+		animate();
+	}
+	function animate(){
+		context.clearRect(0,0,canvas.width,canvas.height);
+		var nowDate=new Date();
+		t=(nowDate-lastDate)/100;
+		y=9.8*t*t/2;
+		x=100*t;
+		if (y>canvas.height-30) {
+			lastDate=new Date();
+		}
+		context.beginPath();
+		context.arc(x,y+30,30,0,Math.PI*2);
+		context.fill();
+		window.requestAnimationFrame(animate);
+	}
+	
+		
+</script>
+</html>

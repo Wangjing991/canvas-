@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>打飞机</title>
+</head>
+<style>
+    #canvas {
+        box-shadow: 0 5px 50px red;
+        margin: 0 auto;
+        display: block;
+    }
+
+    h2 {
+        text-align: center;
+    }
+</style>
+<body>
+<canvas id="canvas" width="320" height="568"></canvas>
+<h2>分数：<span></span></h2>
+</body>
+<script>
+
+</script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext("2d");
+    var aSpan = document.getElementsByTagName('span')[0];
+    var Bg = new Image();
+    var Hero = new Image();
+    var HeroT = new Image();
+    var imagebullet = new Image();
+    var imagePlane = new Image();
+    var imagePlaneShit = new Image();
+    var imagePlaneShit2 = new Image();
+    var imagePlaneShit3 = new Image();
+    var imageNull = new Image();
+    Bg.src = 'img/2.jpg'
+    Hero.src = "img/hero1.png"
+    HeroT.src = "img/hero2.png"
+    imagebullet.src = 'img/bullet1.png'
+    imagePlane.src = 'img/enemy1.png'
+    imagePlaneShit.src = 'img/enemy1_down2.png'
+    imagePlaneShit2.src = 'img/enemy1_down3.png'
+    imagePlaneShit3.src = 'img/enemy1_down4.png'
+    imageNull.src = "img/kongbai.png"
+
+
+    Bg.onload = function () {
+        window.requestAnimationFrame(animate);
+		var bgSound = new Audio("audio/game_music.mp3");
+		bgSound.lanoop = true;
+		bgSound.play();
+    }
+    var disX = 50,     // 飞机的位置
+        disY = canvas.height - 120;
+    var count = 0;
+    var heroStep = 0;
+    var bY = 0, // 背景偏移距离
+        cvsW = canvas.width,
+        cvsH = canvas.height;
+    var indexShit = 1;
+    var bulletsArr = [];
+    var planesArr = [];
+    var shitArr = [];
+
+    function animate() {
+        drawBg();
+        HeroAnt();
+        drawAirport();
+        window.requestAnimationFrame(animate);
+    }
+
+    // 控制 飞机动
+    function HeroAnt() {
+        if (heroStep < 4) {
+            context.drawImage(Hero, disX, disY);
+        } else {
+            if (heroStep === 7) {
+                heroStep = 0
+            }
+            context.drawImage(HeroT, disX, disY);
+        }
+        heroStep++;
+    }
+    
+    function drawBg() {
+        context.clearRect(0, 0, cvsW, cvsH);
+        context.save();
+        context.translate(0, bY);
+        context.drawImage(Bg, 0, 0);
+        context.drawImage(Bg, 0, -cvsH);
+        context.restore();
+        bY++;
+        if (bY > cvsH) {
+            bY = 0
+        }
+    }
+
+    function drawAirport() {
+        //画子弹
+        for (var i = 0, len = bulletsArr.length; i < len; i++) {
+            bulletsArr[i].draw();
+            bulletsArr[i].move();
+            if (bulletsArr[i].y < 0) {
+                bulletsArr.splice(i, 1);
+                --len;
+            }
+        }
+        //画飞机
+        for (var i = 0, len = planesArr.length; i < len; i++) {
+            planesArr[i].draw();
+            planesArr[i].move();
+            if (planesArr[i].y > canvas.height) {
+                planesArr.splice(i, 1);
+                --len;
+            }
+        }
+        //检测是否打到飞机
+        for (var i = 0,len = bulletsArr.length; i < len; i++) {
+            for (var j = 0; j < planesArr.length; j++) {
+                if (
+                    planesArr[j].x < bulletsArr[i].x
+                    && bulletsArr[i].x < planesArr[j].x + 50
+                    && planesArr[j].y < bulletsArr[i].y
+                    && bulletsArr[i].y < planesArr[j].y + 36
+                ) {
+                    planesArr[j].images = imagePlaneShit
+                    bulletsArr[i].y = -100;
+                    shitArr.push(planesArr[j]);
+                    planesArr.splice(j, 1);
+                    score(++count);
+						var eSound = new Audio("audio/enemy1_down.mp3");
+						eSound.play();
+                }
+            }
+        }
+        shitPlane();
+    }
+
+    
+    //重绘炸了的敌机
+    function shitPlane() {
+        if ((indexShit < 5) && shitArr.length) {
+            indexShit++;
+            for (var i = 0; i < shitArr.length; i++) {
+                shitArr[i].img = imagePlaneShit2
+                shitArr[i].draw()
+                shitArr[i].move()
+            }
+        }
+        else if (5 <= indexShit && indexShit < 10) {
+            indexShit++;
+            for (var i = 0; i < shitArr.length; i++) {
+                shitArr[i].img = imagePlaneShit3
+                shitArr[i].draw()
+                shitArr[i].move()
+            }
+        }
+        else if (10 <= indexShit && indexShit < 15) {
+            indexShit++;
+            for (var i = 0; i < shitArr.length; i++) {
+                shitArr[i].img = imageNull
+                shitArr[i].draw()
+                shitArr[i].move()
+                shitArr.splice(i, 1);
+            }
+            if (indexShit === 15) {
+                indexShit = 1;
+            }
+        }
+    }
+
+    function Bullets() {
+        var block = new Bullet(disX + 50, disY - 5, 5, imagebullet, context);
+        bulletsArr.push(block);
+        var bSound = new Audio("audio/bullet.mp3");
+        bSound.play();
+    }
+
+    setInterval(function () {
+        Bullets()
+    }, 270)
+
+
+    function Airport() {
+        var x = getNumberInRange(40, canvas.width - 40); // 敌机出现的水平位置
+        var plane = new Plane(x, 0, 2, imagePlane, context)
+        planesArr.push(plane)
+    }
+
+    setInterval(function () {
+        Airport()
+    }, 500)
+
+
+    document.onkeydown = function (e) {
+        var ev = e || window.event;
+        var num = ev.keyCode
+        switch (num) {
+            case 37:
+                disX -= 4;
+                break;
+            case 38:
+                disY -= 4;
+                break;
+            case 39:
+                disX += 4;
+                break;
+            case 40:
+                disY += 4;
+                break;
+        }
+    }
+    canvas.onmousedown = function (e) {
+        var ev = e || window.event;
+        var bX = ev.clientX - disX;
+        var bY = ev.clientY - disY;
+        var DX = ev.clientX - canvas.offsetLeft;
+        var DY = ev.clientY - canvas.offsetTop;
+        if (DX > disX && DX < (disX + 120) && DY > disY && DY < (disY + 100)) {
+            canvas.onmousemove = function (e) {
+                var ev = e || window.event;
+                var mX = ev.clientX;
+                var mY = ev.clientY;
+                disX = mX - bX;
+                disY = mY - bY;
+            }
+            document.onmouseup = function () {
+                canvas.onmousemove = null;
+            }
+        }
+    }
+
+    function score(count) {
+        aSpan.innerHTML = count * 100;
+    }
+
+    // 单个子弹类
+    function Bullet(x, y, v, img, ctx) {
+        this.x = x;
+        this.y = y;
+        this.v = v;
+        this.images = img;
+        this.ctx = ctx;
+    }
+
+    Bullet.prototype.move = function () {
+        this.y -= this.v
+    }
+    Bullet.prototype.draw = function () {
+        this.ctx.drawImage(this.images, this.x, this.y);
+    }
+
+    // 敌机类
+    function Plane(x, y, v, img, ctx) {
+        this.x = x;
+        this.y = y;
+        this.v = v;
+        this.img = img;
+        this.ctx = ctx;
+    }
+
+    Plane.prototype.move = function () {
+        this.y += this.v
+    }
+    Plane.prototype.draw = function () {
+        this.ctx.drawImage(this.img, this.x, this.y);
+    }
+
+    function getNumberInRange(min, max) {
+        var range = max - min;
+        return Math.round(Math.random() * range) + min;
+    }
+</script>
+</html>

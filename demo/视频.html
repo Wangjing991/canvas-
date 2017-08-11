@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>视频</title>
+</head>
+<style>
+    #canvas{
+        border: 1px solid black;
+    }
+
+</style>
+<body>
+<video id="video" src="v.mp4" width="500"></video>
+<canvas id="canvas" width="672" height="378"></canvas>
+</body>
+<script type="text/javascript">
+    var canvas=document.getElementById("canvas");
+    var context=canvas.getContext('2d');
+    var video=document.getElementById("video");
+    var i = 0;
+    var Inter = 0;
+    video.oncanplay=function(){
+        console.log(video)
+        video.play();
+    }
+    context.fillStyle = "yellow";
+    context.font = "30px Airl";
+    function drawFrame(){
+        i++;
+        context.drawImage(video,0,0,canvas.width,canvas.height);
+        context.fillText("ShineMo", i , 100);
+        if(i>canvas.width){
+            i=10
+            console.log(video.ended)
+        }
+         Inter =  window.requestAnimationFrame(drawFrame)
+        video.ended && window.cancelAnimationFrame(Inter)
+
+    }
+    drawFrame();
+//    setInterval(drawFrame, 50)
+
+</script>
+</html>

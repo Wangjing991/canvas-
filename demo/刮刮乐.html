@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>刮刮乐</title>
+</head>
+<style>
+    #canvas {
+        box-shadow: 0 10px 50px red;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+
+    canvas {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+
+    div {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 500px;
+        height: 500px;
+        /*border: 1px solid black;*/
+    }
+
+    div p {
+        position: absolute;
+        left: 50px;
+        top: 50px;
+        width: 24px;
+        height: 24px;
+        background: skyblue;
+        border-radius: 50%;
+    }
+
+    div img {
+        width: 300px;
+        height: 400px;
+    }
+
+    li {
+        list-style: none;
+        float: left;
+        font-size: 30px;
+    }
+
+    ul {
+        position: absolute;
+        left: 100px;
+        top: 50px;
+    }
+</style>
+<body>
+<div>
+    <img src="./Image/img/1.jpg" alt="">
+</div>
+<canvas id="canvas" width="500" height="500"></canvas>
+
+
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext("2d");
+    context.fillStyle = "gray"
+    context.fillRect(0, 0, 400, 400)
+    context.fill()
+    context.globalCompositeOperation = "destination-out"
+    canvas.onmousedown = function (e) {
+        var ev = e || event;
+        context.moveTo(ev.clientX, ev.clientY)
+        canvas.onmousemove = function (e) {
+            var ev = e || event;
+            context.arc(ev.clientX, ev.clientY, 10, 0, Math.PI * 2)
+            context.fill()
+        }
+        canvas.onmouseup = function () {
+            canvas.onmousemove = null;
+        }
+    }
+
+
+</script>
+</html>

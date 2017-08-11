@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>灰度和反色</title>
+    <style>
+        #canvas {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id="canvas" width="500" height="500"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext("2d");
+    var image = new Image();
+    image.onload = function () {
+        context.drawImage(image, 0, 0);
+        var imageData = context.getImageData(0, 0, 200, 200);
+        var data = imageData.data;
+        console.log(imageData)
+        for (var i = 0; i < data.length; i += 4) {
+            var dataA = ((data[i] + data[i + 1] + data[i + 2]) / 3)
+            data[i] = dataA;
+            data[i + 1] = dataA;
+            data[i + 2] = dataA;
+            data[i + 3] = 100;
+        }
+        context.putImageData(imageData, 200, 0)
+        for (var i = 0; i < data.length; i += 4) {
+
+            data[i] = 255 - data[i];
+            data[i + 1] = 255 - data[i + 2];
+            data[i + 2] = 255 - data[i + 2];
+        }
+        context.putImageData(imageData, 200, 230)
+    }
+
+    image.src = "img/c.png"
+</script>
+</html>

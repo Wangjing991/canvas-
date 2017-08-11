@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>扇形</title>
+</head>
+<style>
+    #canvas {
+        box-shadow: 0 10px 50px red;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+
+    canvas {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+
+    div {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 500px;
+        height: 500px;
+        /*border: 1px solid black;*/
+    }
+
+    div p {
+        position: absolute;
+        left: 50px;
+        top: 50px;
+        width: 24px;
+        height: 24px;
+        background: skyblue;
+        border-radius: 50%;
+    }
+
+    div img {
+        width: 300px;
+        height: 400px;
+    }
+
+    li {
+        list-style: none;
+        float: left;
+        font-size: 30px;
+    }
+
+    ul {
+        position: absolute;
+        left: 100px;
+        top: 50px;
+    }
+</style>
+<body>
+<div>
+    <!--<img src="./Image/img/1.jpg" alt="">-->
+</div>
+<canvas id="canvas" width="500" height="500"></canvas>
+
+
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = 'green';
+    var startAngle = -Math.PI / 2,
+        angle = startAngle,
+        x = 200, y = 200,
+        r = 100;
+//    var timer = setInterval(function () {
+//        // 清除之前绘制的内容
+//        ctx.clearRect( 0, 0, canvas.width, canvas.height );
+//        // 角度增量
+//        angle += 0.1;
+//        // 判断是否停止计时器
+//        if ( angle >= Math.PI * 3 / 2 ) {
+//            clearInterval( timer);
+//            angle = Math.PI * 3 / 2;
+//            console.log( '绘制完成' );
+//        }
+//        // 绘制
+//        ctx.moveTo( x, y );
+//        ctx.arc( x, y, r, startAngle, angle );
+//        ctx.fill();
+//    }, 20);
+
+    var x = 200, y = 200,
+        r = 100,
+        step = Math.PI * 2 / 3,     // 120 度一个区域
+        start = -Math.PI / 2,       // 起始角度
+        colors = [ 'red', 'green', 'blue' ];
+
+    for ( var i = 0; i < 3; i++ ) {
+        ctx.beginPath();
+        ctx.moveTo( x, y );
+        ctx.fillStyle = colors[ i ];
+        ctx.arc( x, y, r, start, start+=step );
+        ctx.fill();
+    }
+
+
+</script>
+</html>
